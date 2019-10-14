@@ -23,6 +23,8 @@ def print_table(table, title_list):
     """
 
     # your goes code
+    print(title_list)
+    print(table)
 
 
 def print_result(result, label):
@@ -38,6 +40,8 @@ def print_result(result, label):
     """
 
     # your code
+    print(label)
+    print(result)
 
 
 def print_menu(title, list_options, exit_message):
@@ -66,7 +70,7 @@ def print_menu(title, list_options, exit_message):
     for i in range(len(list_options)):
         print("{}. {}".format(i+1, list_options[i]))
     print("0. {}".format(exit_message))
-    
+
     # your code
 
 
@@ -106,5 +110,5 @@ def print_error_message(message):
     Returns:
         None: This function doesn't return anything it only prints to console.
     """
-
+    print (message)
     # your code
