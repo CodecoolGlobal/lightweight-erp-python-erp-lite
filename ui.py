@@ -21,7 +21,7 @@ def print_table(table, title_list):
     Returns:
         None: This function doesn't return anything it only prints to console.
     """
-
+    
     # your goes code
     print(title_list)
     print(table)
@@ -94,7 +94,9 @@ def get_inputs(list_labels, title):
             [<user_input_1>, <user_input_2>, <user_input_3>]
     """
     inputs = []
-    inputs.append(input(list_labels[0]))
+    print(title)
+    for i in range(len(list_labels)):
+        inputs.append(input("{}: ".format(list_labels[i])))
     # your code
 
     return inputs
