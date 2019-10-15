@@ -23,9 +23,39 @@ def print_table(table, title_list):
     """
     
     # your goes code
-    print(title_list)
-    print(table)
+    column_width=[]
+    for i in range(len(title_list)):
+        column_width.append(len(title_list[i]))
+    print(column_width)
+    
+    for i in range(len(title_list)):
 
+        for j in range(len(table)):
+            if len(table[j][i])>column_width[i]:
+                column_width[i]=len(table[j][i])
+
+
+    print(column_width)
+
+    table_width = 0
+    for i in range(len(column_width)):
+        table_width += column_width[i]
+
+
+    print('-'*(table_width+(len(title_list)*4)))
+    for j in range(len(title_list)):
+            print('| {:^{width1}} |'.format(title_list[j], width1=column_width[j]),end='')
+    print()
+    print('-'*(table_width+(len(title_list)*4)))
+    for i in range(len(table)):
+
+        for j in range(len(title_list)):
+            print('| {:>{width1}} |'.format(table[i][j], width1=column_width[j]),end='')
+
+        print()
+        print('-'*(table_width+(len(title_list)*4)))
+
+    
 
 def print_result(result, label):
     """
