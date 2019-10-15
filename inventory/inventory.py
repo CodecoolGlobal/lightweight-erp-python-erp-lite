@@ -17,6 +17,52 @@ import data_manager
 # common module
 import common
 
+CSV_FILE = "inventory/inventory.csv"
+LIST_OF_TITLE = ["ID", "Name", "Manufacturer", "Purchase Year", "Durability"]
+TABLE = data_manager.get_table_from_file(CSV_FILE)
+DICT_OF_TITLE ={'ID':0,'Name':1, 'Manufacturer':2, 'Purchase_Year':3, 'Durability':4}
+def choose(menu):
+    inputs = ui.get_inputs(["Please enter a number: "], "")
+    option = inputs[0]
+    if option == "1":
+        show_table(data_manager.get_table_from_file(CSV_FILE))
+    elif option == "2":
+        table=add(data_manager.get_table_from_file(CSV_FILE))
+        data_manager.write_table_to_file(CSV_FILE,table)
+    elif option == "3":
+        id_get = ui.get_inputs([LIST_OF_TITLE[0]],"Enter the ID of the item you want to delete: ")
+        id_=''.join(id_get)
+
+        table = remove(TABLE,id_)
+        data_manager.write_table_to_file(CSV_FILE, table)
+    elif option == "4":
+        id_get = ui.get_inputs([LIST_OF_TITLE[0]],"Enter the ID of the item you want to modify: ")
+        id_=''.join(id_get)
+        table = update(TABLE,id_)
+        data_manager.write_table_to_file(CSV_FILE, table)
+    elif option == "5":
+        get_available_items(TABLE, 2016)
+
+    elif option == "6":
+        get_average_durability_by_manufacturers(TABLE)
+    
+    elif option == "0":
+        return False
+    else:
+        raise KeyError("There is no such option.")
+    return True
+
+def handle_menu():
+    options=["Show table",
+             "Add to inventory",
+             "Remove from inventory",
+             "Update item",
+             "Available items",
+             "Average durability",
+                ]
+
+    ui.print_menu("Inventory Menu", options, "Back to Main Menu")
+
 
 def start_module():
     """
@@ -27,11 +73,18 @@ def start_module():
     Returns:
         None
     """
+       
+    menu = True
+    while menu:
+        
+        handle_menu()
+        try:
+            menu = choose(menu)
+        except KeyError as err:
+            ui.print_error_message(str(err))
+    
 
-    # your code
-
-
-def show_table(table):
+def show_table(table,):
     """
     Display a table
 
@@ -41,8 +94,8 @@ def show_table(table):
     Returns:
         None
     """
-
-    # your code
+       
+    ui.print_table(table,LIST_OF_TITLE)
 
 
 def add(table):
@@ -55,9 +108,13 @@ def add(table):
     Returns:
         list: Table with a new record
     """
-
-    # your code
-
+    new_id=common.generate_random(table)
+    print (new_id)
+    new_item = (ui.get_inputs(LIST_OF_TITLE[1:], "Please enter the datas"))
+    new_item.insert(0,new_id)
+    
+    table.append(new_item)
+       
     return table
 
 
@@ -72,9 +129,14 @@ def remove(table, id_):
     Returns:
         list: Table without specified record.
     """
-
-    # your code
-
+   
+    delete_line=''
+    for i in range(len(table)):
+        
+        if table[i][DICT_OF_TITLE.get('ID')]==id_:
+            delete_line=i
+    table.pop(int(delete_line))            
+   
     return table
 
 
@@ -89,9 +151,16 @@ def update(table, id_):
     Returns:
         list: table with updated record
     """
-
-    # your code
-
+    
+    new_data=[]
+    for i in range(len(table)):
+        
+        if table[i][0]==id_:
+               
+            new_data.append(ui.get_inputs(LIST_OF_TITLE[1:],"New data"))
+            for j in range(len(new_data[0])):
+                table[i][j+1] = new_data[0][j]
+    
     return table
 
 
@@ -111,6 +180,23 @@ def get_available_items(table, year):
     """
 
     # your code
+    available_items = []
+    for i in range(len(table)):
+        if int(table[i][4])+int(table[i][3])>=int(year):
+                try:
+                    available_items.append(int(table[i]))
+                except:
+                    available_items.append(table[i])
+    
+    
+    for i in range(len(available_items)):
+        for j in range(len(available_items[i])):
+            try:
+                available_items[i][j]= int(available_items[i][j])
+            except:
+                available_items[i][j]= available_items[i][j]
+
+    return available_items
 
 
 def get_average_durability_by_manufacturers(table):
@@ -125,3 +211,25 @@ def get_average_durability_by_manufacturers(table):
     """
 
     # your code
+    manufacturer_sum = {}
+    durability_sum = {}
+    avg_durability = {}
+    for i in range(len(table)):
+        count= manufacturer_sum.get(table[i][2])
+        if count==None:
+            manufacturer_sum[table[i][2]] = 1
+             
+        else:
+            manufacturer_sum[table[i][2]] = count+1
+    for i in range(len(table)):
+        count= durability_sum.get(table[i][2])
+        if count==None:
+            durability_sum[table[i][2]]=table[i][4]
+        else:
+            durability_sum[table[i][2]]=int(durability_sum.get(table[i][2]))+int(table[i][4])
+    for key, value in manufacturer_sum.items():
+        avg = float(durability_sum.get(key))/manufacturer_sum.get(key)
+        avg_durability[key]=avg
+        
+
+    return avg_durability
