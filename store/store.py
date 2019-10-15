@@ -17,6 +17,52 @@ import data_manager
 # common module
 import common
 
+CSV_FILE = "store/games.csv"
+LIST_OF_TITLE = ["ID", "Title", "Manufacturer", "Price", "In Stock"]
+TABLE = data_manager.get_table_from_file(CSV_FILE)
+DICT_OF_TITLE ={'ID':0,'Title':1, 'Manufacturer':2, 'Price':3, 'In Stock':4}
+
+def choose(menu):
+    inputs = ui.get_inputs(["Please enter a number: "], "")
+    option = inputs[0]
+    if option == "1":
+        show_table(data_manager.get_table_from_file(CSV_FILE))
+    elif option == "2":
+        table=add(data_manager.get_table_from_file(CSV_FILE))
+        data_manager.write_table_to_file(CSV_FILE,table)
+    elif option == "3":
+        id_get = ui.get_inputs([LIST_OF_TITLE[0]],"Enter the ID of the item you want to delete: ")
+        id_=''.join(id_get)
+
+        table = remove(TABLE,id_)
+        data_manager.write_table_to_file(CSV_FILE, table)
+    elif option == "4":
+        id_get = ui.get_inputs([LIST_OF_TITLE[0]],"Enter the ID of the item you want to modify: ")
+        id_=''.join(id_get)
+        table = update(TABLE,id_)
+        data_manager.write_table_to_file(CSV_FILE, table)
+    elif option == "5":
+        get_counts_by_manufacturers(TABLE, 2016)
+
+    elif option == "6":
+        get_average_by_manufacturer(TABLE)
+    
+    elif option == "0":
+        return False
+    else:
+        raise KeyError("There is no such option.")
+    return True
+
+def handle_menu():
+    options=["Show table",
+             "Add to store",
+             "Remove from store",
+             "Update item",
+             "Counts by manufacturers",
+             "Average by manufacturer",
+                ]
+
+    ui.print_menu("Inventory Menu", options, "Back to Main Menu")
 
 def start_module():
     """
@@ -28,7 +74,14 @@ def start_module():
         None
     """
 
-    # your code
+    menu = True
+    while menu:
+        
+        handle_menu()
+        try:
+            menu = choose(menu)
+        except KeyError as err:
+            ui.print_error_message(str(err))
 
 
 def show_table(table):
@@ -42,7 +95,7 @@ def show_table(table):
         None
     """
 
-    # your code
+    ui.print_table(table,LIST_OF_TITLE)
 
 
 def add(table):
@@ -57,6 +110,12 @@ def add(table):
     """
 
     # your code
+    new_id=common.generate_random(table)
+    print (new_id)
+    new_item = (ui.get_inputs(LIST_OF_TITLE[1:], "Please enter the datas"))
+    new_item.insert(0,new_id)
+    
+    table.append(new_item)
 
     return table
 
@@ -74,6 +133,12 @@ def remove(table, id_):
     """
 
     # your code
+    delete_line=''
+    for i in range(len(table)):
+        
+        if table[i][0]==id_:
+            delete_line=i
+    table.pop(int(delete_line))
 
     return table
 
@@ -91,6 +156,14 @@ def update(table, id_):
     """
 
     # your code
+    new_data=[]
+    for i in range(len(table)):
+        
+        if table[i][0]==id_:
+               
+            new_data.append(ui.get_inputs(LIST_OF_TITLE[1:],"New data"))
+            for j in range(len(new_data[0])):
+                table[i][j+1] = new_data[0][j]
 
     return table
 
