@@ -3,7 +3,7 @@ implement commonly used functions here
 """
 
 import random
-
+import ui
 
 def generate_random(table):
     """
@@ -49,3 +49,37 @@ def generate_random(table):
 
 
     return generated
+
+def add(table,list_of_titles):
+    new_id=generate_random(table)
+    print (new_id)
+    new_item = (ui.get_inputs(list_of_titles[1:], "Please enter the datas"))
+    new_item.insert(0,new_id)
+    
+    table.append(new_item)
+
+    return table
+
+def remove(table, id_):
+    delete_line=''
+    for i in range(len(table)):
+        
+        if table[i][0]==id_:
+            delete_line=i
+    try:
+        table.pop(int(delete_line))
+    except:
+        ui.print_error_message("There is no record with that ID.")
+    return table
+
+def update(table, id_, list_of_titles):
+    new_data=[]
+    for i in range(len(table)):
+        
+        if table[i][0]==id_:
+               
+            new_data.append(ui.get_inputs(list_of_titles[1:],"Update records."))
+            for j in range(len(new_data[0])):
+                table[i][j+1] = new_data[0][j]
+
+    return table
