@@ -73,8 +73,18 @@ def choose():
     while option not in OPTION:
         raise KeyError
 
+
 def show_table(table):
     ui.print_table(table, LIST_OF_TITLES)
+
+   """ Args:
+        table (list): list of lists to be displayed.
+
+    Returns:
+        None
+    """
+
+    # your code
 
 
 def add(table):
@@ -191,4 +201,5 @@ def get_persons_closest_to_average(table):
             name.append(name_of_people[i])  
     return name
     
-    
+
+    # your code
