@@ -25,9 +25,9 @@ def choose(menu):
     inputs = ui.get_inputs(["Please enter a number: "], "")
     option = inputs[0]
     if option == "1":
-        show_table(data_manager.get_table_from_file(CSV_FILE))
+        show_table(TABLE)
     elif option == "2":
-        table=add(data_manager.get_table_from_file(CSV_FILE))
+        table=add(TABLE)
         data_manager.write_table_to_file(CSV_FILE,table)
     elif option == "3":
         id_get = ui.get_inputs([LIST_OF_TITLE[0]],"Enter the ID of the item you want to delete: ")
@@ -108,12 +108,7 @@ def add(table):
     Returns:
         list: Table with a new record
     """
-    new_id=common.generate_random(table)
-    print (new_id)
-    new_item = (ui.get_inputs(LIST_OF_TITLE[1:], "Please enter the datas"))
-    new_item.insert(0,new_id)
-    
-    table.append(new_item)
+    table=common.add(table,LIST_OF_TITLE)
        
     return table
 
@@ -130,12 +125,7 @@ def remove(table, id_):
         list: Table without specified record.
     """
    
-    delete_line=''
-    for i in range(len(table)):
-        
-        if table[i][DICT_OF_TITLE.get('ID')]==id_:
-            delete_line=i
-    table.pop(int(delete_line))            
+    table= common.remove(table,id_)            
    
     return table
 
@@ -152,14 +142,7 @@ def update(table, id_):
         list: table with updated record
     """
     
-    new_data=[]
-    for i in range(len(table)):
-        
-        if table[i][0]==id_:
-               
-            new_data.append(ui.get_inputs(LIST_OF_TITLE[1:],"New data"))
-            for j in range(len(new_data[0])):
-                table[i][j+1] = new_data[0][j]
+    table=common.update(table,id_, LIST_OF_TITLE)
     
     return table
 
