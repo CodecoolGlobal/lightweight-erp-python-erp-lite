@@ -30,8 +30,10 @@ def print_table(table, title_list):
     for i in range(len(title_list)):
 
         for j in range(len(table)):
-            if len(table[j][i])>column_width[i]:
-                column_width[i]=len(table[j][i])
+            
+            if len(str(table[j][i]))>column_width[i]:
+                
+                column_width[i]=len(str(table[j][i]))
 
     table_width = 0
     for i in range(len(column_width)):
@@ -52,7 +54,7 @@ def print_table(table, title_list):
 
     
 
-def print_result(result, label):
+def print_result(result, label, list_of_title=[]):
     """
     Displays results of the special functions.
 
@@ -66,7 +68,19 @@ def print_result(result, label):
 
     # your code
     print(label)
-    print(result)
+    
+    if type(result)==dict:
+        for key, value in result.items():
+            print('{} :  {}'.format(key, value))
+
+    elif type(result)==list:
+        for i in range(len(result)):
+            print(result[i])
+        
+        print_table(result, list_of_title)
+    else:
+        print(result)
+    print()
 
 
 def print_menu(title, list_options, exit_message):
