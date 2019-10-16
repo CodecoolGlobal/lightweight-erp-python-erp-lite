@@ -77,12 +77,12 @@ def choose():
 def show_table(table):
     ui.print_table(table, LIST_OF_TITLES)
 
-   """ Args:
-        table (list): list of lists to be displayed.
+  # """ Args:
+   #     table (list): list of lists to be displayed.
 
-    Returns:
-        None
-    """
+   # Returns:
+    #    None
+    #"""
 
     # your code
 
