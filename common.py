@@ -32,7 +32,7 @@ def generate_random(table):
             sequence += a
             list_of_chars.pop(s)
 
-        print (sequence)
+        
         random_id=""
         for i in range(len(sequence)):
             if sequence[i] == '1':
@@ -54,7 +54,6 @@ def generate_random(table):
 
 def add(table,list_of_titles):
     new_id=generate_random(table)
-    print (new_id)
     new_item = (ui.get_inputs(list_of_titles[1:], "Please enter the datas"))
     new_item.insert(0,new_id)
     
