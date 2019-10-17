@@ -110,7 +110,7 @@ def check_table(table,list_of_types):
                 if list_of_types[j]==2:
                     table[i][j] =  int(table[i][j])
             except:
-                print(table[i][j])
+                
                 return False    
     for i in range(len(table)):
         for j in range(len(table[i])):
