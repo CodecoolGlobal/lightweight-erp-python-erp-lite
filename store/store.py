@@ -20,32 +20,39 @@ import common
 CSV_FILE = "store/games.csv"
 LIST_OF_TITLE = ["ID", "Title", "Manufacturer", "Price", "In Stock"]
 TABLE = data_manager.get_table_from_file(CSV_FILE)
-DICT_OF_TITLE ={'ID':0,'Title':1, 'Manufacturer':2, 'Price':3, 'In Stock':4}
+DICT_OF_TYPES = {1:'str',2:'int'}
+LIST_OF_TYPES =[1, 1, 1, 2, 2]
 
 def choose(menu):
-    inputs = ui.get_inputs(["Please enter a number: "], "")
+    inputs = ui.get_inputs(["Please enter a number "], "")
     option = inputs[0]
     if option == "1":
-        show_table(TABLE)
+        show_table(data_manager.get_table_from_file(CSV_FILE))
     elif option == "2":
-        table=add(TABLE)
-        data_manager.write_table_to_file(CSV_FILE,table)
+        table=add(data_manager.get_table_from_file(CSV_FILE))
+        common.check_data_and_write_to_file(table,LIST_OF_TYPES, CSV_FILE, "saved to")
     elif option == "3":
         id_get = ui.get_inputs([LIST_OF_TITLE[0]],"Enter the ID of the item you want to delete: ")
         id_=''.join(id_get)
 
-        table = remove(TABLE,id_)
-        data_manager.write_table_to_file(CSV_FILE, table)
+        table = remove(data_manager.get_table_from_file(CSV_FILE),id_)
+        common.check_data_and_write_to_file(table,LIST_OF_TYPES, CSV_FILE, "removed from")
+        
+        #if common.check_table(table, LIST_OF_TYPES):
+        #    data_manager.write_table_to_file(CSV_FILE,table)
+        #else:
+        #    ui.print_error_message("Invalid data \n Record not saved.")
     elif option == "4":
         id_get = ui.get_inputs([LIST_OF_TITLE[0]],"Enter the ID of the item you want to modify: ")
         id_=''.join(id_get)
-        table = update(TABLE,id_)
-        data_manager.write_table_to_file(CSV_FILE, table)
+        table = update(data_manager.get_table_from_file(CSV_FILE),id_)
+        common.check_data_and_write_to_file(table,LIST_OF_TYPES, CSV_FILE, "updated in")
     elif option == "5":
-        get_counts_by_manufacturers(TABLE, 2016)
-
+        
+        ui.print_result(get_counts_by_manufacturers(data_manager.get_table_from_file(CSV_FILE)), "count")
     elif option == "6":
-        get_average_by_manufacturer(TABLE)
+        manufacturer = ''.join(ui.get_inputs(["Manufacturer: "], "Average amount of games in stock of a given manufacturer."))
+        ui.print_result(get_average_by_manufacturer(data_manager.get_table_from_file(CSV_FILE), manufacturer), "Average amount of games in stock by {}".format(manufacturer))
     
     elif option == "0":
         return False
@@ -161,8 +168,15 @@ def get_counts_by_manufacturers(table):
     Returns:
          dict: A dictionary with this structure: { [manufacturer] : [count] }
     """
-
-    # your code
+    manufacturer_sum = {}
+    for i in range(len(table)):
+        count= manufacturer_sum.get(table[i][2])
+        if count==None:
+            manufacturer_sum[table[i][2]] = 1
+             
+        else:
+            manufacturer_sum[table[i][2]] = count+1
+    return manufacturer_sum
 
 
 def get_average_by_manufacturer(table, manufacturer):
@@ -176,5 +190,14 @@ def get_average_by_manufacturer(table, manufacturer):
     Returns:
          number
     """
-
-    # your code
+    count=0
+    sum_games=0
+    for i in range(len(table)):
+        if table[i][2]==manufacturer:
+            sum_games += int(table[i][4])
+            count += 1
+    try:
+        avg = float(sum_games)/count        
+    except:
+        avg=0
+    return avg

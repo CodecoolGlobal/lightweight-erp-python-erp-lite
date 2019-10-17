@@ -20,31 +20,38 @@ import common
 CSV_FILE = "inventory/inventory.csv"
 LIST_OF_TITLE = ["ID", "Name", "Manufacturer", "Purchase Year", "Durability"]
 TABLE = data_manager.get_table_from_file(CSV_FILE)
-DICT_OF_TITLE ={'ID':0,'Name':1, 'Manufacturer':2, 'Purchase_Year':3, 'Durability':4}
+DICT_OF_TYPES = {1:'str',2:'int'}
+LIST_OF_TYPES =[1, 1, 1, 2, 2]
 def choose(menu):
     inputs = ui.get_inputs(["Please enter a number: "], "")
     option = inputs[0]
     if option == "1":
-        show_table(TABLE)
+        show_table(data_manager.get_table_from_file(CSV_FILE))
     elif option == "2":
-        table=add(TABLE)
-        data_manager.write_table_to_file(CSV_FILE,table)
+        table=add(data_manager.get_table_from_file(CSV_FILE))
+        common.check_data_and_write_to_file(table,LIST_OF_TYPES, CSV_FILE,"saved to")
     elif option == "3":
         id_get = ui.get_inputs([LIST_OF_TITLE[0]],"Enter the ID of the item you want to delete: ")
         id_=''.join(id_get)
 
-        table = remove(TABLE,id_)
-        data_manager.write_table_to_file(CSV_FILE, table)
+        table = remove(data_manager.get_table_from_file(CSV_FILE),id_)
+        common.check_data_and_write_to_file(table,LIST_OF_TYPES, CSV_FILE, "removed from")
+
     elif option == "4":
         id_get = ui.get_inputs([LIST_OF_TITLE[0]],"Enter the ID of the item you want to modify: ")
         id_=''.join(id_get)
-        table = update(TABLE,id_)
-        data_manager.write_table_to_file(CSV_FILE, table)
+        table = update(data_manager.get_table_from_file(CSV_FILE),id_)
+        common.check_data_and_write_to_file(table,LIST_OF_TYPES, CSV_FILE, "updated in")
     elif option == "5":
-        get_available_items(TABLE, 2016)
+        try:
+            year =int(''.join(ui.get_inputs(["Year: "], "Available items in a given year.")))
+            
+        except:
+            ui.print_error_message("Thats not a number.")
+        ui.print_result(get_available_items(data_manager.get_table_from_file(CSV_FILE), year),("Available items in {}".format(year)), LIST_OF_TITLE)
 
     elif option == "6":
-        get_average_durability_by_manufacturers(TABLE)
+        ui.print_result(get_average_durability_by_manufacturers(data_manager.get_table_from_file(CSV_FILE)),"Average durability by manufacturers:")
     
     elif option == "0":
         return False
@@ -84,7 +91,7 @@ def start_module():
             ui.print_error_message(str(err))
     
 
-def show_table(table,):
+def show_table(table):
     """
     Display a table
 
