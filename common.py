@@ -4,6 +4,8 @@ implement commonly used functions here
 
 import random
 import ui
+import datetime
+import data_manager
 
 def generate_random(table):
     """
@@ -83,3 +85,43 @@ def update(table, id_, list_of_titles):
                 table[i][j+1] = new_data[0][j]
 
     return table
+
+
+def check_date_between(end_date, start_date, this_date):
+    if datetime.date(this_date[0],this_date[1],this_date[2])<datetime.date(end_date[0],end_date[1],end_date[2]) and datetime.date(this_date[0],this_date[1],this_date[2])>datetime.date(start_date[0],start_date[1],start_date[2]):
+        return True
+    else:
+        return False
+
+def check_valid_date(start_date,end_date):
+    try:
+        if datetime.date(int(end_date[0]),int(end_date[1]),int(end_date[2]))-datetime.date(int(start_date[0]),int(start_date[1]),int(start_date[2]))>datetime.timedelta(0):
+            return True
+    except:
+        return False
+
+def check_table(table,list_of_types):
+
+    for i in range(len(table)):
+        for j in range(len(table[i])):
+            try:
+                
+                if list_of_types[j]==1:
+                    table[i][j] =  str(table[i][j])
+                if list_of_types[j]==2:
+                    table[i][j] =  int(table[i][j])
+            except:
+                print(table[i][j])
+                return False    
+    for i in range(len(table)):
+        for j in range(len(table[i])):
+            table[i][j] =  str(table[i][j])     
+    return True
+
+def check_data_and_write_to_file(table,LIST_OF_TYPES, CSV_FILE, message):
+    if check_table(table, LIST_OF_TYPES):
+        data_manager.write_table_to_file(CSV_FILE,table)
+        ui.print_progress("Record {} {}".format(message, CSV_FILE))
+    else:
+        ui.print_error_message("Invalid data \n Record not saved.")
+    
