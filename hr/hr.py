@@ -153,7 +153,7 @@ def get_oldest_person(table):
         list: A list of strings (name or names if there are two more with the same value)
     """
     max_age= 2019
-
+    oldpp = []
     for i in range(len(table)):
         if int(table[i][2]) < max_age:
             oldest_index = i
