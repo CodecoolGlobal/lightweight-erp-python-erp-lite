@@ -74,9 +74,7 @@ def print_result(result, label, list_of_title=[]):
             print('{} :  {}'.format(key, value))
 
     elif type(result)==list:
-        for i in range(len(result)):
-            print(result[i])
-        
+               
         print_table(result, list_of_title)
     else:
         print(result)
@@ -135,9 +133,9 @@ def get_inputs(list_labels, title):
     """
     inputs = []
     print(title)
+    print()
     for i in range(len(list_labels)):
         inputs.append(input("{}: ".format(list_labels[i])))
-    print(inputs)
     return inputs
 
 
@@ -151,6 +149,11 @@ def print_error_message(message):
     Returns:
         None: This function doesn't return anything it only prints to console.
     """
+    print()
+    print("Error: {}".format(message))
+    print()
+
+def print_progress(message):
     print()
     print(message)
     print()
