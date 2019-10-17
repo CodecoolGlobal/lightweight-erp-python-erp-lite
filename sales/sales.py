@@ -170,7 +170,7 @@ def get_lowest_price_item_id(table):
     """
     list_of_lowest_price=[]
     min_price=9999999999
-    ordered = 'aaaaa'
+    ordered = 'zzzzz'
     id_of_lowest_price=""
         
     for i in range(len(table)):
@@ -183,12 +183,12 @@ def get_lowest_price_item_id(table):
           
         
     for i in range(len(list_of_lowest_price)):
-        if list_of_lowest_price[i][1]>ordered:
+        if list_of_lowest_price[i][1]<ordered:
             ordered=list_of_lowest_price[i][1]
             id_of_lowest_price=i
+    result=list_of_lowest_price[id_of_lowest_price][0]
     
-    
-    return list_of_lowest_price[id_of_lowest_price][0]
+    return result
 
     
 

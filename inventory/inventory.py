@@ -45,10 +45,10 @@ def choose(menu):
     elif option == "5":
         try:
             year =int(''.join(ui.get_inputs(["Year: "], "Available items in a given year.")))
-            
+            ui.print_result(get_available_items(data_manager.get_table_from_file(CSV_FILE), year),("Available items in {}".format(year)), LIST_OF_TITLE)
         except:
             ui.print_error_message("Thats not a number.")
-        ui.print_result(get_available_items(data_manager.get_table_from_file(CSV_FILE), year),("Available items in {}".format(year)), LIST_OF_TITLE)
+        
 
     elif option == "6":
         ui.print_result(get_average_durability_by_manufacturers(data_manager.get_table_from_file(CSV_FILE)),"Average durability by manufacturers:")
