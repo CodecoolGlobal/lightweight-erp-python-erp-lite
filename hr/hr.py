@@ -65,7 +65,7 @@ def choose():
         table = update(TABLE,id_)
         data_manager.write_table_to_file(file_name, table)
     elif option == "5":
-        get_oldest_person(TABLE)
+        ui.print_result(get_oldest_person(TABLE), "The oldest person is:" )
     elif option == "6":
         ui.print_result(get_persons_closest_to_average(TABLE),"Closest to average: ")
     elif option == '0':
@@ -163,7 +163,7 @@ def get_oldest_person(table):
         elif int(table[i][2]) == max_age:
             oldpp.append(table[i][1])
 
-    return  ui.print_result(oldppl, "The oldest person is born in {}".format(max_age))
+    return  oldpp
     # your code
 
 
@@ -177,29 +177,24 @@ def get_persons_closest_to_average(table):
     Returns:
         list: list of strings (name or names if there are two more with the same value)
     """
-    age_sum = 0
-    date_of_birth = []
-    date_of_birth_subtract = []
-    name_of_people = []
-    name = []
-  
-    for i in range(len(table)):
-        age_sum = age_sum + int(table[i][2])
-        name_of_people.append(table[i][1])
-        date_of_birth.append(table[i][2])
-    average = age_sum / len(table)
+    year_list = []
+    for element in table:
+        year_list.append(int(element[2]))
+    suma = 0
+    for element in year_list:
+        suma = suma + int(element)
+    avarage = float(suma)/int(len(year_list))
+    first_person = int(table[0][2])
+    list_of_people = []
+    for element in table:
+        if abs(int(element[2]) - avarage) < abs(first_person - avarage):
+            first_person = int(element[2])
+            list_of_people[0] = element[1]
+        elif abs(int(element[2]) - avarage) == abs(first_person - avarage):
+            first_person = int(element[2])
+            list_of_people.append(element[1])
 
-    for i in date_of_birth:
-        i = int(i) - average
-        date_of_birth_subtract.append(i)
-
-    minimum = 1000
-    for i in range(len(date_of_birth)):
-        x = (int(average)-int(date_of_birth[i]))
-        if x <= minimum:
-            minimum = x
-            name.append(name_of_people[i])  
-    return name
+    return list_of_people
     
 
     # your code
