@@ -72,10 +72,13 @@ def print_result(result, label, list_of_title=[]):
     if type(result)==dict:
         for key, value in result.items():
             print('{} :  {}'.format(key, value))
-
-    elif type(result)==list:
+    elif type(result)==list and list_of_title==[]:
+        for i in range(len(result)):
+            print(result[i])
+    elif type(result)==list and list_of_title!=None:
                
         print_table(result, list_of_title)
+    
     else:
         print(result)
     print()
