@@ -71,7 +71,7 @@ def choose():
     elif option == "5":
         ui.print_result (get_longest_name_id(TABLE), "The longest name is:") 
     elif option == "6":
-        get_subscribed_emails(TABLE)
+        ui.print_result(get_subscribed_emails(TABLE), "The longest name is:", LIST_OF_TITLES[3:1])
     elif option == '0':
         raise ValueError
     while option not in OPTION:
@@ -201,6 +201,6 @@ def get_subscribed_emails(table):
             customer.append(row[1])
             customer.append(row[2])
             customers.append(customer)
-    print(customers)
-    return ui.print_result(customers, "The longest name is:", LIST_OF_TITLES[1:3])
+
+    return customers
     # your code
