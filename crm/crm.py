@@ -169,12 +169,15 @@ def get_longest_name_id(table):
         elif len(table[i][1]) == longest_name:
             names.append(table[i][1])
             ids.append(table[i][0])
-    result = ""
-    for i in range(len(ids)):
-        result = ids[0]
-        if ids[i]>result:
-            result = ids[i]
+    l_name = ""
+    for i in range(len(names)):
+        l_name = names[0]
+        if names[i]>l_name:
+            l_name = names[i]
+            id_of_longest=i
     
+    result= ids[id_of_longest]
+
     return result
 
 
